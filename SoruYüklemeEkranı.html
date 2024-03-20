@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sınav Sorusu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #D80AB9;
+            color: white;
+            font-family: 'Arial Rounded MT';
+            text-align: center;
+            margin: 0;
+        }
+
+        .content-wrapper {
+            background-color: white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .questions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .question-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .question-table th,
+            .question-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+                color: black;
+            }
+
+            .question-table th {
+                background-color: #D80AB9;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+    <div align="left">
+        <img src="Images/minikodlogo (1).png" width="200" height=" 100" alt="MİNİKODUN LOGOSU" />
+    </div>
+    <div class="content-wrapper">
+        <h2>Soru Yükleme</h2>
+        <textarea id="questionText" rows="4" style="width: 100%;" placeholder="Sorunuzu buraya yazın"></textarea>
+        <br>
+        <label for="choice1">A:</label>
+        <input type="text" id="choice1" placeholder="A seçeneği">
+        <input type="radio" name="correctChoice" value="A">
+        <br>
+        <label for="choice2">B:</label>
+        <input type="text" id="choice2" placeholder="B seçeneği">
+        <input type="radio" name="correctChoice" value="B">
+        <br>
+        <label for="choice3">C:</label>
+        <input type="text" id="choice3" placeholder="C seçeneği">
+        <input type="radio" name="correctChoice" value="C">
+        <br>
+        <label for="choice4">D:</label>
+        <input type="text" id="choice4" placeholder="D seçeneği">
+        <input type="radio" name="correctChoice" value="D">
+        <br>
+        <button type="button" onclick="uploadQuestion()">Soruyu Yükle</button>
+
+        <h2>Sorular</h2>
+        <ul class="questions-list" id="questionsList"> </ul>
+            <script>
+                var storedQuestionsList = localStorage.getItem("questionsList");
+                document.getElementById("questionsList").innerHTML = storedQuestionsList;
+            </script>
+       
+        <h2>Question Table</h2>
+        <table class="question-table">
+            <thead>
+                <tr>
+                    <th>Soru</th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>D</th>
+                    <th>Doğru Seçenek</th>
+                </tr>
+            </thead>
+            <tbody id="questionTableBody"></tbody>
+                <script>
+                    var storedQuestionTableBody = localStorage.getItem("questionTableBody");
+                    document.getElementById("questionTableBody").innerHTML = storedQuestionTableBody;
+                </script>
+            
+        </table>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script>
+        function uploadQuestion() {
+            var questionText = document.getElementById("questionText").value.trim();
+            var choices = [
+                document.getElementById("choice1").value.trim(),
+                document.getElementById("choice2").value.trim(),
+                document.getElementById("choice3").value.trim(),
+                document.getElementById("choice4").value.trim()
+            ];
+
+            var correctChoice = document.querySelector('input[name="correctChoice"]:checked');
+
+            if (questionText !== "" && choices.every(choice => choice !== "") && correctChoice) {
+                var listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${questionText}</strong><br>
+                                                  A: ${choices[0]}<br>
+                                                  B: ${choices[1]}<br>
+                                                  C: ${choices[2]}<br>
+                                                  D: ${choices[3]}<br>
+                                                  Doğru Seçenek: ${correctChoice.value}`;
+
+                document.getElementById("questionsList").appendChild(listItem);
+
+                var tableRow = document.createElement("tr");
+                tableRow.innerHTML = `<td>${questionText}</td>
+                                                 <td>${choices[0]}</td>
+                                                 <td>${choices[1]}</td>
+                                                 <td>${choices[2]}</td>
+                                                 <td>${choices[3]}</td>
+                                                 <td>${correctChoice.value}</td>`;
+
+                document.getElementById("questionTableBody").appendChild(tableRow);
+
+                document.getElementById("questionText").value = "";
+                choices.forEach((choice, index) => document.getElementById(`choice${index + 1}`).value = "");
+                document.querySelectorAll('input[name="correctChoice"]').forEach(input => input.checked = false);
+            } else {
+                alert("Lütfen soru, şıklar ve doğru seçeneği doldurun.");
+            }
+        }
+        function transferQuestions() {
+            var questionsList = document.getElementById("questionsList").innerHTML;
+            var questionTableBody = document.getElementById("questionTableBody").innerHTML;
+
+            localStorage.setItem("questionsList", questionsList);
+            localStorage.setItem("questionTableBody", questionTableBody);
+        }
+    </script>
+
+</body>
+</html>
+
+

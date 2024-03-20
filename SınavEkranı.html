@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sınav Sorusu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .question-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div align="left">
+        <img src="Images/minikodlogo (1).png" width="200" height=" 100" alt="MİNİKODUN LOGOSU" />
+
+        <div class="question-container">
+            <h2>Soru 1: Bu bir örnek soru mu?</h2>
+            <ul class="options">
+                <li class="option">
+                    <input type="radio" id="optionA" name="answer" value="A">
+                    <label for="optionA">A) Evet</label>
+                </li>
+                <li class="option">
+                    <input type="radio" id="optionB" name="answer" value="B">
+                    <label for="optionB">B) Hayır</label>
+                </li>
+                <li class="option">
+                    <input type="radio" id="optionC" name="answer" value="C">
+                    <label for="optionC">C) Belki</label>
+                </li>
+                <li class="option">
+                    <input type="radio" id="optionD" name="answer" value="D">
+                    <label for="optionD">D) Bilmiyorum</label>
+                </li>
+            </ul>
+        </div>
+        <div class="question-container">
+            <h2>Soru 1: hangileri doğrudur sorusu?</h2>
+            <ul class="options">
+                <li class="option">
+                    <input type="checkbox" id="optionA" name="answer" value="A">
+                    <label for="optionA">A) Evet</label>
+                </li>
+                <li class="option">
+                    <input type="checkbox" id="optionB" name="answer" value="B">
+                    <label for="optionB">B) Hayır</label>
+                </li>
+                <li class="option">
+                    <input type="checkbox" id="optionC" name="answer" value="C">
+                    <label for="optionC">C) Belki</label>
+                </li>
+                <li class="option">
+                    <input type="checkbox" id="optionD" name="answer" value="D">
+                    <label for="optionD">D) Bilmiyorum</label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- ... (your previous code) ... -->
+
+    <div align="center">
+        <!-- Update the function name in the onclick attribute -->
+        <button type="button" class="btn btn-outline-success" onclick="goToExamSuccess()">Sınavı Bitir</button>
+        <button type="button" class="btn btn-outline-success" onclick="checkAnswer()">Cevabı Kontrol Et</button>
+        <p id="result"></p>
+        <button type="button" class="btn btn-outline-info" onclick="transferQuestions()">Soruları Aktar</button>
+    </div>
+
+    <!-- ... (your previous code) ... -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script>
+        function goToExamSuccess() {
+            showAlert('success', 'Sınavı başarıyla tamamladınız! Notunuz:100');
+        }
+        function showAlert(type, message) {
+            // Create an alert div with Bootstrap classes
+            var alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert', 'alert-' + type);
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.textContent = message;
+
+            // Append the alert to the body or any specific container
+            document.body.appendChild(alertDiv);
+        }
+    </script>
+    <script>
+        function checkAnswer() {
+            // Get the correct answer (you can set this dynamically)
+            var correctAnswer = "A";
+
+            // Get the user's selected answer
+            var selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+            // Check if an answer is selected
+            if (selectedAnswer) {
+                // Compare the selected answer with the correct answer
+                if (selectedAnswer.value === correctAnswer) {
+                    document.getElementById("result").innerHTML = "Doğru!";
+                } else {
+                    document.getElementById("result").innerHTML = "Yanlış! Doğru cevap: " + correctAnswer;
+                }
+            } else {
+                document.getElementById("result").innerHTML = "Lütfen bir cevap seçin.";
+            }
+        }
+
+        function transferQuestions() {
+            var questionsList = document.getElementById("questionsList").innerHTML;
+            var questionTableBody = document.getElementById("questionTableBody").innerHTML;
+
+            localStorage.setItem("questionsList", questionsList);
+            localStorage.setItem("questionTableBody", questionTableBody);
+
+            // Redirect to the SınavEkranı.html page
+            window.location.href = "SınavEkranı.html";
+        }
+    </script>
+    <!--<script>
+        function checkAnswer() {
+            // Get the correct answer (you can set this dynamically)
+            var correctAnswer = "A";
+
+            // Get the user's selected answer
+            var selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+            // Check if an answer is selected
+            if (selectedAnswer) {
+                // Compare the selected answer with the correct answer
+                if (selectedAnswer.value === correctAnswer) {
+                    document.getElementById("result").innerHTML = "Doğru!";
+                } else {
+                    document.getElementById("result").innerHTML = "Yanlış! Doğru cevap: " + correctAnswer;
+                }
+            } else {
+                document.getElementById("result").innerHTML = "Lütfen bir cevap seçin.";
+            }
+        }
+    </script>-->
+</body>
+</html>
